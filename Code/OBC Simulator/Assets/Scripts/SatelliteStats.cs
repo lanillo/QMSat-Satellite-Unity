@@ -5,35 +5,35 @@ using UnityEngine.UI;
 
 public class SatelliteStats : MonoBehaviour {
 
-    public float battery = 100f;
+    [Header("Abilities of Satellite")]
     public bool commCollision = false;
     public bool lightCollision = false;
 
-    public Text batteryText;
-
+    [Header("Battery Options")]
+    public static float battery = 100f;
     public float batteryDechargeRate = 0.1f;
     public float batteryRechargeRate = 0.1f;
 
-    public GameObject GameOver;
-    public bool satelliteDead = false;
+    public float antennaDeployementRate = 0.5f;
+    public float antennaDeployementTotalCost = 10f;
+
+    public bool antennaDeployed = false;
+
+    [Header("Unity Text Fields")]
+    public Text batteryText;
 
     private void Start()
     {
+        battery = 100f;
         commCollision = PlayerPrefsX.GetBool("commCollision");
         lightCollision = PlayerPrefsX.GetBool("lightCollision");
-        GameOver.SetActive(false);
+
+        batteryText.supportRichText = true;
     }
 
     private void Update()
     {
-        if (battery <= 0f)
-        {
-            satelliteDead = true;
-            GameOver.SetActive(true);
-            batteryText.text = "";
-        }
-
-        if (satelliteDead)
+        if (GameManager.gameOver)
             return;
 
         commCollision = PlayerPrefsX.GetBool("commCollision");
@@ -47,6 +47,9 @@ public class SatelliteStats : MonoBehaviour {
     {
         if (!lightCollision)
         {
+            if (AntennaDeployer.deployAntenna && !antennaDeployed)
+                AntennaDeployementCost(antennaDeployementTotalCost);
+
             battery -= batteryDechargeRate * Time.deltaTime;
         }
         else
@@ -56,9 +59,29 @@ public class SatelliteStats : MonoBehaviour {
 
         battery = Mathf.Clamp(battery, 0.00f, 100.0f);
 
-        batteryText.text = "Battery: " + battery.ToString("0.00") + "%";
+        if (battery <= 33f)
+            batteryText.color = Color.red;
+        else if (battery <= 66f)
+            batteryText.color = Color.yellow;
+        else
+            batteryText.color = Color.green;
+
+        batteryText.supportRichText = true;
+
+        batteryText.text = "Batteries: " + battery.ToString("0.00") + "%";
     }
 
+    IEnumerator AntennaDeployementCost(float time)
+    {
+        float currentTime = 0.0f;
+
+        do
+        {
+            battery -= antennaDeployementRate;
+            currentTime += Time.deltaTime;
+            yield return null;
+        } while (currentTime <= time);
+    }
 
 
 

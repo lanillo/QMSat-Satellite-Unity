@@ -11,17 +11,8 @@ public class CheckObstacle : MonoBehaviour {
     public bool commCollision = false;
     public bool lightCollision = false;
 
-    private LineRenderer line;
-
     private void Start()
-    {
-        /*// Add a Line Renderer to the GameObject
-        line = this.gameObject.AddComponent<LineRenderer>();
-        // Set the width of the Line Renderer
-        line.startWidth = 0.1f;
-        // Set the number of vertex fo the Line Renderer
-        line.positionCount = 2;*/
-     
+    {     
         commCollision = CanTransmit();
         lightCollision = SolarCharging();
 
@@ -32,14 +23,6 @@ public class CheckObstacle : MonoBehaviour {
 
     private void Update()
     {
-        /*// Check if the GameObjects are not null
-        if (target != null && cubesat != null)
-        {
-            // Update position of the two vertex of the Line Renderer
-            line.SetPosition(0, target.transform.position);
-            line.SetPosition(1, cubesat.transform.position);
-        }*/
-
         commCollision = CanTransmit();
         lightCollision = SolarCharging();
 
@@ -53,6 +36,8 @@ public class CheckObstacle : MonoBehaviour {
 
         RaycastHit hit;
         Vector3 direction = groundStation.transform.position - cubesat.transform.position;
+        Debug.DrawLine(groundStation.transform.position, cubesat.transform.position);
+
         if (Physics.Raycast(cubesat.transform.position, direction, out hit)) //Range if we want
         {
             switch (hit.transform.gameObject.tag)
@@ -75,6 +60,7 @@ public class CheckObstacle : MonoBehaviour {
 
         RaycastHit hit;
         Vector3 direction = sunlight.transform.position - cubesat.transform.position;
+        Debug.DrawLine(sunlight.transform.position, cubesat.transform.position);
         if (Physics.Raycast(cubesat.transform.position, direction, out hit)) //Range if we want
         {
             switch (hit.transform.gameObject.tag)
