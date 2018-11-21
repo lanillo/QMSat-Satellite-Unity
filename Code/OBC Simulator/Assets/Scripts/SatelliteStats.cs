@@ -13,14 +13,17 @@ public class SatelliteStats : MonoBehaviour {
     public static float battery = 100f;
     public float batteryDechargeRate = 0.1f;
     public float batteryRechargeRate = 0.1f;
-
-    public float antennaDeployementRate = 0.5f;
+    
+    static public float cumulativeAntennaDeployment = 0f;
+    public float antennaDeployementRate = 1f;
     public float antennaDeployementTotalCost = 10f;
 
     public bool antennaDeployed = false;
 
     [Header("Unity Text Fields")]
     public Text batteryText;
+
+    public Gradient gr;
 
     private void Start()
     {
@@ -45,11 +48,22 @@ public class SatelliteStats : MonoBehaviour {
 
     void BatteryUpdate()
     {
+
+        // Check if antenna is being deployed
+        if (AntennaDeployer.deployAntenna && !antennaDeployed)
+        {
+            cumulativeAntennaDeployment += antennaDeployementRate * Time.deltaTime;
+            battery -= antennaDeployementRate * Time.deltaTime;
+
+            if (cumulativeAntennaDeployment >= antennaDeployementTotalCost)
+            {
+                antennaDeployed = true;
+            }
+        }
+
+        // Check if it's on light
         if (!lightCollision)
         {
-            if (AntennaDeployer.deployAntenna && !antennaDeployed)
-                AntennaDeployementCost(antennaDeployementTotalCost);
-
             battery -= batteryDechargeRate * Time.deltaTime;
         }
         else
@@ -59,16 +73,9 @@ public class SatelliteStats : MonoBehaviour {
 
         battery = Mathf.Clamp(battery, 0.00f, 100.0f);
 
-        if (battery <= 33f)
-            batteryText.color = Color.red;
-        else if (battery <= 66f)
-            batteryText.color = Color.yellow;
-        else
-            batteryText.color = Color.green;
-
-        batteryText.supportRichText = true;
-
+        batteryText.color = gr.Evaluate(battery / 100f);
         batteryText.text = "Batteries: " + battery.ToString("0.00") + "%";
+
     }
 
     IEnumerator AntennaDeployementCost(float time)

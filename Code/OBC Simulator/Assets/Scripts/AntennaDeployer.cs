@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class AntennaDeployer : MonoBehaviour {
 
-    private GameObject Antenna;
-    private GameObject Antenna1;
-    private GameObject Antenna2;
-    private GameObject Antenna3;
+    public GameObject Antenna;
+    public GameObject Antenna1;
+    public GameObject Antenna2;
+    public GameObject Antenna3;
 
     public static bool deployAntenna = false;
     public bool scaleAntenna = false;
@@ -15,10 +15,6 @@ public class AntennaDeployer : MonoBehaviour {
     private void Start()
     {
         deployAntenna = false;
-        Antenna = GameObject.Find("Antenna");
-        Antenna1 = GameObject.Find("Antenna1");
-        Antenna2 = GameObject.Find("Antenna2");
-        Antenna3 = GameObject.Find("Antenna3");
     }
 
     private void Update()
