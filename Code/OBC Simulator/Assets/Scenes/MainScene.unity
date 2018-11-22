@@ -552,9 +552,9 @@ RectTransform:
   m_Father: {fileID: 1819624392}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 347.5, y: -188.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 80, y: 15}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &594741243
@@ -874,6 +874,7 @@ GameObject:
   - component: {fileID: 839336221}
   - component: {fileID: 839336222}
   - component: {fileID: 839336223}
+  - component: {fileID: 839336224}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -984,6 +985,19 @@ MonoBehaviour:
   Antenna2: {fileID: 781696141}
   Antenna3: {fileID: 781696140}
   scaleAntenna: 0
+--- !u!114 &839336224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 839336218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e92d09198569bae41bf6f914adf55f63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: []
+  magnetometer: {fileID: 1766623191}
 --- !u!1 &1025164982
 GameObject:
   m_ObjectHideFlags: 0
@@ -995,7 +1009,7 @@ GameObject:
   - component: {fileID: 1025164985}
   - component: {fileID: 1025164984}
   m_Layer: 5
-  m_Name: Text
+  m_Name: CaptureDataText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1051,7 +1065,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: "Acquisition de donn\xE9es"
 --- !u!222 &1025164985
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1286,6 +1300,11 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1555888390}
   m_CullTransparentMesh: 0
+--- !u!4 &1766623191 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4082304889368780, guid: 11a107f9f5e7694488be4c8cdfd53558,
+    type: 2}
+  m_PrefabInternal: {fileID: 781696139}
 --- !u!1 &1819624391
 GameObject:
   m_ObjectHideFlags: 0
@@ -1466,9 +1485,9 @@ RectTransform:
   m_Father: {fileID: 1819624392}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -428, y: -204}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 80, y: 45}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1942198479
@@ -1509,7 +1528,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1942198480}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 839336224}
+        m_MethodName: StartMagnetometer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1942198480
