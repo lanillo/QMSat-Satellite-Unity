@@ -8,28 +8,40 @@ public class SatelliteStats : MonoBehaviour {
     [Header("Abilities of Satellite")]
     public bool commCollision = false;
     public bool lightCollision = false;
+    public bool canTransmit = false;
 
-    [Header("Battery Options")]
     public static float battery = 100f;
+    [Header("Battery Options")]
     public float batteryDechargeRate = 0.1f;
     public float batteryRechargeRate = 0.1f;
-    
-    static public float cumulativeAntennaDeployment = 0f;
+    [Space(10)]
     public float antennaDeployementRate = 1f;
     public float antennaDeployementTotalCost = 10f;
+    private float cumulativeAntennaDeployment = 0f;
+    [Space(10)]
+    public float batteryCaptureDataDechargeRate = 0.5f;
+    [Space(10)]
 
-    public bool antennaDeployed = false;
+
+
+    private bool antennaDeployed = false;
 
     [Header("Unity Text Fields")]
     public Text batteryText;
 
+    [Header("Unity Objects")]
     public Gradient gr;
+    public GameObject comm;
+    private Button commButton;
+
+    //public bool test = false;
 
     private void Start()
     {
         battery = 100f;
         commCollision = PlayerPrefsX.GetBool("commCollision");
         lightCollision = PlayerPrefsX.GetBool("lightCollision");
+        commButton = comm.GetComponent<Button>();
 
         batteryText.supportRichText = true;
     }
@@ -43,12 +55,10 @@ public class SatelliteStats : MonoBehaviour {
         lightCollision = PlayerPrefsX.GetBool("lightCollision");
 
         BatteryUpdate();
-
     }
 
     void BatteryUpdate()
     {
-
         // Check if antenna is being deployed
         if (AntennaDeployer.deployAntenna && !antennaDeployed)
         {
@@ -60,6 +70,15 @@ public class SatelliteStats : MonoBehaviour {
                 antennaDeployed = true;
             }
         }
+
+        // If data is being captured
+        if (CaptureData.capturingData)
+        {
+            battery -= batteryCaptureDataDechargeRate * Time.deltaTime;
+        }
+
+        // Check if you can transmit data to ground station (enable or disabl button
+        CanTransmit();
 
         // Check if it's on light
         if (!lightCollision)
@@ -78,19 +97,23 @@ public class SatelliteStats : MonoBehaviour {
 
     }
 
-    IEnumerator AntennaDeployementCost(float time)
+    void CanTransmit()
     {
-        float currentTime = 0.0f;
-
-        do
+        // If antenna is not deployed, cannot trasnmit
+        if (!antennaDeployed)
         {
-            battery -= antennaDeployementRate;
-            currentTime += Time.deltaTime;
-            yield return null;
-        } while (currentTime <= time);
+            commButton.interactable = false;
+            canTransmit = false;
+        } //Check if you want them to communicate or not (hard mode ??)
+        else if (commCollision)
+        {
+            commButton.interactable = true;
+            canTransmit = true;
+        }
+        else
+        {
+            commButton.interactable = false;
+            canTransmit = false;
+        }
     }
-
-
-
-
 }

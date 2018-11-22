@@ -1,20 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 
-public class CaptureData : MonoBehaviour {
-
-    public MagnetometerData[] data;
+public class CaptureData : MonoBehaviour
+{
+    public static MagnetometerData[] data;
     public Transform magnetometer;
+    public GameObject cooldownBar;
+    private Slider slider;
 
-    private int index = 0;
+    public static bool capturingData = false;
+    public float timeBeforeNextCapture = 5f;
+
+    private static int index = 0;
     private const int MAX_DATA = 15;
 
     private void Start()
     {
         data = new MagnetometerData[MAX_DATA];
         index = 0;
+        capturingData = false;
+        cooldownBar.SetActive(false);
+        slider = cooldownBar.GetComponentInChildren<Slider>();
     }
 
     public void StartMagnetometer()
@@ -26,15 +35,43 @@ public class CaptureData : MonoBehaviour {
         }
         else
         {
-            GetDataAtPosition(index);
-            index++;
+            if (!capturingData)
+            {
+                GetDataAtPosition(index);
+                index++;
+                capturingData = true;
+                StartCoroutine(DelayBeforeCapture(timeBeforeNextCapture));
+            }
         }
     }
+
+    public static int GetIndex()
+    {
+        return index;
+    }
+
+    IEnumerator DelayBeforeCapture(float time)
+    {
+        float elapsedTime = 0f;
+        cooldownBar.SetActive(true);
+
+        while (elapsedTime <= timeBeforeNextCapture)
+        {
+            slider.value = elapsedTime / timeBeforeNextCapture;
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        capturingData = false;
+        cooldownBar.SetActive(false);
+    }
+
+    #region GetData
 
     void GetDataAtPosition(int index)
     {
         GetPosition(index);
-        GetTime(index);
+        //GetTime(index);
         GetMagneticField(index);
     }
 
@@ -48,10 +85,14 @@ public class CaptureData : MonoBehaviour {
         data[index].z = position.z;
     }
 
-    void GetTime(int index)
+    /*void GetTime(int index)
     {
-        data[index].timestamp = DateTime.Now;
-    }
+        elapsedTime = Time.realtimeSinceStartup - elapsedTime;
+        data[index].timestamp = elapsedTime;
+
+        Debug.Log("Temps ecoule debut sim:" + Time.realtimeSinceStartup);
+        Debug.Log("Temps ecoule:" + elapsedTime);
+    }*/
 
     void GetMagneticField(int index)
     {
@@ -62,31 +103,33 @@ public class CaptureData : MonoBehaviour {
     {
         if (value < -20f)
         {
-            return UnityEngine.Random.Range(0.25f, 0.30f);
+            return UnityEngine.Random.Range(0.45f, 0.60f);
         }
         else if (value >= -20f && value < -15f)
         {
-            return UnityEngine.Random.Range(0.30f, 0.35f);
+            return UnityEngine.Random.Range(0.35f, 0.45f);
         }
         else if (value >= -15f && value < -5f)
         {
-            return UnityEngine.Random.Range(0.35f, 0.45f);
+            return UnityEngine.Random.Range(0.30f, 0.35f);
         }
         else if (value >= -5f && value < 5f)
         {
-            return UnityEngine.Random.Range(0.45f, 0.60f);
+            return UnityEngine.Random.Range(0.25f, 0.30f);
         }
         else if (value >= 5f && value < 15f)
         {
-            return UnityEngine.Random.Range(0.35f, 0.45f);
+            return UnityEngine.Random.Range(0.30f, 0.35f);
         }
         else if (value >= 15f && value < 20f)
         {
-            return UnityEngine.Random.Range(0.30f, 0.35f);
+            return UnityEngine.Random.Range(0.35f, 0.45f);
         }
         else
         {
-            return UnityEngine.Random.Range(0.25f, 0.30f);
+            return UnityEngine.Random.Range(0.45f, 0.60f);
         }
     }
+
+    #endregion
 }
