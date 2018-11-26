@@ -11,10 +11,19 @@ public class AntennaDeployer : MonoBehaviour {
 
     public static bool deployAntenna = false;
     public bool scaleAntenna = false;
+    public float riskAntennaDeployement = 0.1f;
+
+    public bool failure = false;
 
     private void Start()
     {
         deployAntenna = false;
+
+        if (riskAntennaDeployement >= Random.Range(0f, 1f))
+        {
+            Debug.Log("Failure with Antenna");
+            failure = true;
+        }
     }
 
     private void Update()
@@ -39,8 +48,8 @@ public class AntennaDeployer : MonoBehaviour {
     {
         Vector3 originalScale_03 = Antenna.transform.localScale;
         Vector3 originalScale_12 = Antenna1.transform.localScale;
-        Vector3 destinationScale_03 = new Vector3(4.9f, 0f, 0.1f);
-        Vector3 destinationScale_12 = new Vector3(0.1f, 0f, 4.9f);
+        Vector3 destinationScale_03 = new Vector3(4.9f, 0.05f, 0.1f);
+        Vector3 destinationScale_12 = new Vector3(0.1f, 0.05f, 4.9f);
 
         float currentTime = 0.0f;
 

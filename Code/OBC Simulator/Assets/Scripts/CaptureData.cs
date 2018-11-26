@@ -9,6 +9,8 @@ public class CaptureData : MonoBehaviour
     public static MagnetometerData[] data;
     public Transform magnetometer;
     public GameObject cooldownBar;
+    public Text CaptureDataText;
+    public Gradient gr;
     private Slider slider;
 
     public static bool capturingData = false;
@@ -16,14 +18,18 @@ public class CaptureData : MonoBehaviour
 
     private static int index = 0;
     private const int MAX_DATA = 15;
+    public static int MAX_DATA_TO_SHARE = 0;
 
     private void Start()
     {
         data = new MagnetometerData[MAX_DATA];
+        MAX_DATA_TO_SHARE = MAX_DATA;
         index = 0;
         capturingData = false;
         cooldownBar.SetActive(false);
         slider = cooldownBar.GetComponentInChildren<Slider>();
+        CaptureDataText.text = "Acquérir donnée (" + GetIndex().ToString() + "/" + MAX_DATA.ToString() + ")";
+        //CaptureDataText.color = gr.Evaluate(((float)index + 1) / 15f);
     }
 
     public void StartMagnetometer()
@@ -31,13 +37,15 @@ public class CaptureData : MonoBehaviour
         if (index >= MAX_DATA)
         {
             index = 0;
-            Debug.Log("Warning, overwritting data");
+            Debug.Log("Warning, data overwritten");
         }
         else
         {
             if (!capturingData)
             {
                 GetDataAtPosition(index);
+                //CaptureDataText.color = gr.Evaluate(((float) index + 1) / 15f);
+                CaptureDataText.text = "Acquérir donnée (" + GetNumberOfElements().ToString() + "/" + MAX_DATA.ToString() + ")";
                 index++;
                 capturingData = true;
                 StartCoroutine(DelayBeforeCapture(timeBeforeNextCapture));
@@ -50,14 +58,24 @@ public class CaptureData : MonoBehaviour
         return index;
     }
 
+    public static int GetNumberOfElements()
+    {
+        return index + 1;
+    }
+
+    public static void ResetIndex()
+    {
+        index = 0;
+    }
+
     IEnumerator DelayBeforeCapture(float time)
     {
         float elapsedTime = 0f;
         cooldownBar.SetActive(true);
 
-        while (elapsedTime <= timeBeforeNextCapture)
+        while (elapsedTime <= time)
         {
-            slider.value = elapsedTime / timeBeforeNextCapture;
+            slider.value = elapsedTime / time;
             elapsedTime += Time.deltaTime;
             yield return null;
         }

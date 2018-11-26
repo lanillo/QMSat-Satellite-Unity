@@ -12,4 +12,6 @@ public struct MagnetometerData
     public float magneticField;
 
     //public float timestamp;
+
+
 }
