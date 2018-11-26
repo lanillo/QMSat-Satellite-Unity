@@ -16,6 +16,8 @@ public class CaptureData : MonoBehaviour
     public static bool capturingData = false;
     public float timeBeforeNextCapture = 5f;
 
+    public float temperatureRate = 1.5f;
+
     private static int index = 0;
     private const int MAX_DATA = 15;
     public static int MAX_DATA_TO_SHARE = 0;
@@ -53,6 +55,8 @@ public class CaptureData : MonoBehaviour
         }
     }
 
+    #region Index
+
     public static int GetIndex()
     {
         return index;
@@ -68,6 +72,8 @@ public class CaptureData : MonoBehaviour
         index = 0;
     }
 
+    #endregion
+
     IEnumerator DelayBeforeCapture(float time)
     {
         float elapsedTime = 0f;
@@ -77,6 +83,7 @@ public class CaptureData : MonoBehaviour
         {
             slider.value = elapsedTime / time;
             elapsedTime += Time.deltaTime;
+            SatelliteStats.payloadTemperature += Time.deltaTime * temperatureRate;
             yield return null;
         }
 

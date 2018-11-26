@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,9 +29,14 @@ public class SatelliteStats : MonoBehaviour {
     private bool payloadDeployed = false;
 
     [Header("Temperatures")]
-    public float batteryTemperature = 60f;
-    public float telecomTemperature = 60f;
-    public float payloadTemperature = 60f;
+    public float temperatureIncreaseRate = 0.1f;
+    public float temperatureDecreaseRate = 2.5f;
+    public static bool alimFailure = false;
+    public static bool telecomFailure = false;
+    public static bool payloadFailure = false;
+    public static float alimTemperature = 60f;
+    public static float telecomTemperature = 60f;
+    public static float payloadTemperature = 60f;
 
     [Header("Player Stats")]
     public static float playerScore = 0;
@@ -43,6 +47,9 @@ public class SatelliteStats : MonoBehaviour {
     public Text batteryStatusText;
     public Text scoreText;
     public Text moneyText;
+    public Text alimText;
+    public Text telecomText;
+    public Text payloadText;
 
     [Header("Unity Objects")]
     public Gradient gr;
@@ -61,6 +68,14 @@ public class SatelliteStats : MonoBehaviour {
         commButton = comm.GetComponent<Button>();
         captureDataButton = captureData.GetComponent<Button>();
 
+        alimTemperature = Random.Range(20f, 60f);
+        payloadTemperature = Random.Range(0f, 50f);
+        telecomTemperature = Random.Range(0, 50f);
+
+        alimFailure = false;
+        telecomFailure = false;
+        payloadFailure = false;
+
         batteryText.supportRichText = true;
     }
 
@@ -72,8 +87,46 @@ public class SatelliteStats : MonoBehaviour {
         commCollision = PlayerPrefsX.GetBool("commCollision");
         lightCollision = PlayerPrefsX.GetBool("lightCollision");
 
+        UpdateTemperature();
         UpdateBattery();
         UpdatePlayerStats();
+    }
+
+    private void UpdateTemperature()
+    {
+        if (lightCollision)
+        {
+            alimTemperature += temperatureIncreaseRate * Time.deltaTime;
+            payloadTemperature += temperatureIncreaseRate * Time.deltaTime;
+            telecomTemperature += temperatureIncreaseRate * Time.deltaTime;
+        }
+        else
+        {
+            alimTemperature -= temperatureDecreaseRate * Time.deltaTime;
+            payloadTemperature -= temperatureDecreaseRate * Time.deltaTime;
+            telecomTemperature -= temperatureDecreaseRate * Time.deltaTime;
+        }        
+
+        // -40 a 125;
+        alimText.text = alimTemperature.ToString("0") + " °C";
+        payloadText.text = payloadTemperature.ToString("0") + " °C";
+        telecomText.text = telecomTemperature.ToString("0") + " °C";
+
+        if (alimTemperature > 125f || alimTemperature < -40f)
+        {
+            alimFailure = true;
+        }
+
+        if (payloadTemperature > 125f || payloadTemperature < -40f)
+        {
+            payloadFailure = true;
+        }
+
+        if (telecomTemperature > 125f || telecomTemperature < -40f)
+        {
+            telecomFailure = true;
+        }
+
     }
 
     void UpdateBattery()

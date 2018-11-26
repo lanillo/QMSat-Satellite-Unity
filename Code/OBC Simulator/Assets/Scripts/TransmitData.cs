@@ -19,6 +19,8 @@ public class TransmitData : MonoBehaviour {
     private int dataAmount = 0;
     private int dataTransmitted = 0;
 
+    public float temperatureRate = 10f;
+
     public int PointsPerDataTransmitted = 100;
 
     private void Start()
@@ -49,6 +51,7 @@ public class TransmitData : MonoBehaviour {
         {
             slider.value = elapsedTime / time;
             elapsedTime += Time.deltaTime;
+            SatelliteStats.telecomTemperature += Time.deltaTime * temperatureRate;
             yield return null;
         }
 
@@ -71,7 +74,6 @@ public class TransmitData : MonoBehaviour {
         }
 
         CaptureData.ResetIndex();
-
         CaptureDataText.text = "Acquérir donnée (0/" + CaptureData.MAX_DATA_TO_SHARE.ToString() + ")";
     }
 
