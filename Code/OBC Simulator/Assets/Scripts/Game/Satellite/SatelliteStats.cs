@@ -10,33 +10,36 @@ public class SatelliteStats : MonoBehaviour {
     public bool lightCollision = false;
     public bool canTransmit = false;
     public bool canCapture = false;
+    public bool enableHeater = false;
 
-    public static float battery = 100f;
     [Header("Battery Options")]
+    public float battery = 100f;
     public float batteryDechargeRate = 0.1f;
     public float batteryRechargeRate = 0.1f;
-    [Space(10)]
+    [Space(5)]
     public float antennaDeployementRate = 1f;
     public float antennaDeployementTotalCost = 10f;
     private float cumulativeAntennaDeployment = 0f;
     private bool antennaDeployed = false;
-    [Space(10)]
-    public float batteryCaptureDataDechargeRate = 0.5f;
-    [Space(10)]
+    [Space(5)]
     public float payloadDeployementRate = 1f;
     public float payloadDeployementTotalCost = 10f;
     private float cumulativePayloadDeployment = 0f;
     private bool payloadDeployed = false;
+    [Space(5)]
+    public float captureDataDechargeRate = 0.5f;
 
     [Header("Temperatures")]
     public float temperatureIncreaseRate = 0.1f;
     public float temperatureDecreaseRate = 2.5f;
-    public static bool alimFailure = false;
-    public static bool telecomFailure = false;
-    public static bool payloadFailure = false;
-    public static float alimTemperature = 60f;
-    public static float telecomTemperature = 60f;
-    public static float payloadTemperature = 60f;
+    public float batteryHeaterTemperatureRate = 1f;
+    public float batteryHeaterBatteryRate = 1.5f;
+    public bool alimFailure = false;
+    public bool telecomFailure = false;
+    public bool payloadFailure = false;
+    public float alimTemperature = 60f;
+    public float telecomTemperature = 60f;
+    public float payloadTemperature = 60f;
 
     [Header("Player Stats")]
     public static float playerScore = 0;
@@ -44,7 +47,6 @@ public class SatelliteStats : MonoBehaviour {
 
     [Header("Unity Text Fields")]
     public Text batteryText;
-    public Text batteryStatusText;
     public Text scoreText;
     public Text moneyText;
     public Text alimText;
@@ -55,28 +57,42 @@ public class SatelliteStats : MonoBehaviour {
     public Gradient gr;
     public GameObject comm;
     public GameObject captureData;
+    public Slider batterySlider;
+    public Image batteryImage;
     private Button commButton;
     private Button captureDataButton;
 
-    //public bool test = false;
+    /* For Script accessing */
+    private AntennaDeployer antennaDeployer;
+    private PayloadDeployer payloadDeployer;
 
     private void Start()
     {
+        // Start Values
         battery = 100f;
-        commCollision = PlayerPrefsX.GetBool("commCollision");
-        lightCollision = PlayerPrefsX.GetBool("lightCollision");
+        playerMoney = 0f;
+        playerScore = 0f;
+
+        // Access Other Values
+        antennaDeployer = GetComponent<AntennaDeployer>();
+        payloadDeployer = GetComponent<PayloadDeployer>();
+
+        // Get Fonctionnalities
         commButton = comm.GetComponent<Button>();
         captureDataButton = captureData.GetComponent<Button>();
 
-        alimTemperature = Random.Range(20f, 60f);
-        payloadTemperature = Random.Range(0f, 50f);
-        telecomTemperature = Random.Range(0, 50f);
+        // Set Start Temperatures
+        alimTemperature = Random.Range(30f, 60f);
+        payloadTemperature = Random.Range(10f, 50f);
+        telecomTemperature = Random.Range(10, 50f);
 
+        // Reset Bools
         alimFailure = false;
         telecomFailure = false;
         payloadFailure = false;
+        enableHeater = false;
 
-        batteryText.supportRichText = true;
+        ReadTemperatures();
     }
 
     private void Update()
@@ -84,81 +100,33 @@ public class SatelliteStats : MonoBehaviour {
         if (GameManager.gameOver)
             return;
 
-        commCollision = PlayerPrefsX.GetBool("commCollision");
-        lightCollision = PlayerPrefsX.GetBool("lightCollision");
+
 
         UpdateTemperature();
         UpdateBattery();
         UpdatePlayerStats();
     }
 
-    private void UpdateTemperature()
-    {
-        if (lightCollision)
-        {
-            alimTemperature += temperatureIncreaseRate * Time.deltaTime;
-            payloadTemperature += temperatureIncreaseRate * Time.deltaTime;
-            telecomTemperature += temperatureIncreaseRate * Time.deltaTime;
-        }
-        else
-        {
-            alimTemperature -= temperatureDecreaseRate * Time.deltaTime;
-            payloadTemperature -= temperatureDecreaseRate * Time.deltaTime;
-            telecomTemperature -= temperatureDecreaseRate * Time.deltaTime;
-        }        
-
-        // -40 a 125;
-        alimText.text = alimTemperature.ToString("0") + " °C";
-        payloadText.text = payloadTemperature.ToString("0") + " °C";
-        telecomText.text = telecomTemperature.ToString("0") + " °C";
-
-        if (alimTemperature > 125f || alimTemperature < -40f)
-        {
-            alimFailure = true;
-        }
-
-        if (payloadTemperature > 125f || payloadTemperature < -40f)
-        {
-            payloadFailure = true;
-        }
-
-        if (telecomTemperature > 125f || telecomTemperature < -40f)
-        {
-            telecomFailure = true;
-        }
-
-    }
-
     void UpdateBattery()
     {
         // Check if antenna is being deployed
-        if (AntennaDeployer.deployAntenna && !antennaDeployed)
+        if (antennaDeployer.deployAntenna && !antennaDeployed)
         {
             cumulativeAntennaDeployment += antennaDeployementRate * Time.deltaTime;
             battery -= antennaDeployementRate * Time.deltaTime;
 
             if (cumulativeAntennaDeployment >= antennaDeployementTotalCost)
-            {
                 antennaDeployed = true;
-            }
         }
 
         // Check if payload is being deployed
-        if (PayloadDeployer.deployPayload && !payloadDeployed)
+        if (payloadDeployer.deployPayload && !payloadDeployed)
         {
             cumulativePayloadDeployment += payloadDeployementRate * Time.deltaTime;
             battery -= payloadDeployementRate * Time.deltaTime;
 
             if (cumulativePayloadDeployment >= payloadDeployementTotalCost)
-            {
                 payloadDeployed = true;
-            }
-        }
-
-        // If data is being captured
-        if (CaptureData.capturingData)
-        {
-            battery -= batteryCaptureDataDechargeRate * Time.deltaTime;
         }
 
         // Check if you can transmit data to ground station (enable or disable button)
@@ -169,21 +137,17 @@ public class SatelliteStats : MonoBehaviour {
 
         // Check if it's on light
         if (!lightCollision)
-        {
             battery -= batteryDechargeRate * Time.deltaTime;
-            batteryStatusText.text = "Mode décharge";
-        }
         else
-        {
             battery += batteryRechargeRate * Time.deltaTime;
-            batteryStatusText.text = "Mode chargement";
-        }
 
         battery = Mathf.Clamp(battery, 0.00f, 100.0f);
 
-        batteryText.color = gr.Evaluate(battery / 100f);
-        batteryText.text = "Batteries: " + battery.ToString("0.00") + "%";
+        batterySlider.value = battery / 100f;
+        batteryImage.color = Color.Lerp(Color.red, Color.green, batterySlider.value); 
 
+        batteryText.color = gr.Evaluate(battery / 100f);
+        batteryText.text = battery.ToString("0") + "%";
     }
 
     void CanTransmit()
@@ -225,7 +189,7 @@ public class SatelliteStats : MonoBehaviour {
 
     void UpdatePlayerStats()
     {
-        //scoreText.text = "" //Show at GameOver
+        scoreText.text = playerScore.ToString();
         moneyText.text = playerMoney.ToString() + " $  ";
     }
 
@@ -239,5 +203,83 @@ public class SatelliteStats : MonoBehaviour {
         playerMoney += amount;
     }
 
-    #endregion PlayerStats
+    #endregion
+
+    #region Temperatures
+
+    private void UpdateTemperature()
+    {
+        // Temperature updates from Light Collision
+        if (lightCollision)
+        {
+            alimTemperature += temperatureIncreaseRate * Time.deltaTime;
+            payloadTemperature += temperatureIncreaseRate * Time.deltaTime;
+            telecomTemperature += temperatureIncreaseRate * Time.deltaTime;
+        }
+        else
+        {
+            alimTemperature -= temperatureDecreaseRate * Time.deltaTime;
+            payloadTemperature -= temperatureDecreaseRate * Time.deltaTime;
+            telecomTemperature -= temperatureDecreaseRate * Time.deltaTime;
+        }
+
+        // Enable Battery Heater
+        if (enableHeater)
+        {
+            alimTemperature += batteryHeaterTemperatureRate * Time.deltaTime;
+            battery -= batteryHeaterBatteryRate * Time.deltaTime;
+        }
+
+        CheckTemperatureLimits();
+    }
+
+    void CheckTemperatureLimits()
+    {
+        if (alimTemperature > 125f || alimTemperature < -40f)
+        {
+            alimFailure = true;
+        }
+
+        if (payloadTemperature > 125f || payloadTemperature < -40f)
+        {
+            payloadFailure = true;
+        }
+
+        if (telecomTemperature > 125f || telecomTemperature < -40f)
+        {
+            telecomFailure = true;
+        }
+    }
+
+    public void ReadAlimTemperature()
+    {
+        // -40 a 125;
+        alimText.text = alimTemperature.ToString("0") + " °C";
+    }
+
+    public void ReadPaylaodTemperature()
+    {
+        // -40 a 125;
+        payloadText.text = payloadTemperature.ToString("0") + " °C";
+    }
+
+    public void ReadTelecomTemperature()
+    {
+        // -40 a 125;
+        telecomText.text = telecomTemperature.ToString("0") + " °C";
+    }
+
+    public void ReadTemperatures()
+    {
+        ReadAlimTemperature();
+        ReadPaylaodTemperature();
+        ReadTelecomTemperature();
+    }
+
+    public void EnableHeater(bool input)
+    {
+        enableHeater = input;
+    }
+
+    #endregion
 }

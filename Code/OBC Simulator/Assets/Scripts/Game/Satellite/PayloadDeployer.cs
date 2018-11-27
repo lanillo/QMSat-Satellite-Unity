@@ -4,33 +4,40 @@ using UnityEngine;
 
 public class PayloadDeployer : MonoBehaviour {
 
+    [Header("Payload Tweaks")]
+    public float riskPayloadDeployement = 0.1f;
+    public float temperatureRate = 1f;
+    public float temperatureTotalCost = 10f;
+
+    [Header("Unity Gameobjects")]
     public GameObject payload;
     public ParticleSystem explosion;
     private GameObject diamond;
-    private CollisionDetector cd;
+    private CollisionDetector collisionDetector;
 
-    public static bool deployPayload = false;
-    public float riskPayloadDeployement = 0.1f;
-
-    public float temperatureRate = 1f;
-    public float temperatureTotalCost = 10f;
-    private float cumulativeTemperatureDeployment = 0f;
-    private bool deployed = false;
-
+    [Header("Payload Status")]
+    public bool deployPayload = false;
+    public bool payloadBroke = false;
     private bool failure = false;
+    private bool deployed = false;
     private float timer = 0f;
+    private float cumulativeTemperatureDeployment = 0f;
     private bool endParticule = false;
     private bool endGame = false;
-    public static bool payloadBroke = false;
+
+    /* For Script accessing */
+    private SatelliteStats satelliteStats;
 
     private void Start()
     {
         deployPayload = false;
-        deployed = false;
-        endGame = false;
         payloadBroke = false;
+
+        // Get payload GameObject and the CollisionDetector
         diamond = payload.transform.GetChild(0).gameObject;
-        cd = diamond.GetComponent<CollisionDetector>();
+        collisionDetector = diamond.GetComponent<CollisionDetector>();
+
+        satelliteStats = GetComponent<SatelliteStats>();
 
         if (riskPayloadDeployement >= Random.Range(0f, 1f))
         {
@@ -42,24 +49,25 @@ public class PayloadDeployer : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        // Check if payload is out or particule is done
         if (endParticule || endGame)
         {
             timer += Time.deltaTime;
 
             if (timer > 3f)
-            {
                 payloadBroke = true;
-            }
 
             return;
         }
 
-        if (cd.collisionWithEarth && !endParticule)
+        // Instantiate particule effect when collision with earth happens
+        if (collisionDetector.collisionWithEarth && !endParticule)
         {
             Instantiate(explosion, diamond.transform);
             endParticule = true;
         }
 
+        // Deploy Payload After Request
         if (deployPayload)
         {
             timer += Time.deltaTime;
@@ -69,21 +77,21 @@ public class PayloadDeployer : MonoBehaviour {
             payload.transform.localPosition = Vector3.Lerp(from, to, Time.deltaTime);
         }
 
+        // Once the payload is deployed, let go if risk is true
         if (timer > 1f && failure)
         {
             diamond.transform.parent = null;
             endGame = true;
         }
 
+        // Accumulate Temperature while satellite is beign deployed
         if (deployPayload && !deployed)
         {
             cumulativeTemperatureDeployment += temperatureRate * Time.deltaTime;
-            SatelliteStats.payloadTemperature += temperatureRate * Time.deltaTime;
+            satelliteStats.payloadTemperature += temperatureRate * Time.deltaTime;
 
             if (cumulativeTemperatureDeployment >= temperatureTotalCost)
-            {
                 deployed = true;
-            }
         }
     }
 

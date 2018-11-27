@@ -9,7 +9,6 @@ public class SceneFader : MonoBehaviour
     public Image img;
     public AnimationCurve curve;
 
-    // Use this for initialization
     void Start()
     {
         StartCoroutine(FadeIn());

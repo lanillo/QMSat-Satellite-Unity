@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CollisionDetector : MonoBehaviour {
 
+    [HideInInspector]
     public bool collisionWithEarth = false;
 
     private void Start()

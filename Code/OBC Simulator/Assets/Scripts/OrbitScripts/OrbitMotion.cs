@@ -1,10 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class OrbitMotion : MonoBehaviour
 {
-
     public Transform orbitingObject;
     public Ellipse orbitPath;
 
@@ -25,7 +23,6 @@ public class OrbitMotion : MonoBehaviour
 
         SetOrbitingObject();
         StartCoroutine(AnimateOrbit());
-
 	}
 
     void SetOrbitingObject()
@@ -43,7 +40,7 @@ public class OrbitMotion : MonoBehaviour
         while (orbitActive)
         {
             orbitProgress += Time.deltaTime * orbitSpeed;
-            orbitProgress %= 1f; // reset to 1;
+            orbitProgress %= 1f;
             SetOrbitingObject();
             yield return null;
         }

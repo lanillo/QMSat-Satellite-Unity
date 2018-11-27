@@ -6,33 +6,42 @@ using UnityEngine.UI;
 
 public class TransmitData : MonoBehaviour {
 
-    public GameObject cooldownBar;
-    private Slider slider;
-    public Text CaptureDataText;
-
-    List<MagnetometerData> dataset = new List<MagnetometerData>();
-
-    public static bool transmittingData = false;
+    [Header("Transmit Tweaks")]
     public float timePerData = 0.5f;
     public float timeBuffer = 0f;
+    public float temperatureRate = 10f;
+    public int PointsPerDataTransmitted = 100;
+
+    [Header("Unity GameObjects")]
+    public GameObject cooldownBar;
+    public Text CaptureDataText;
+    private Slider slider;
+
     private float timeBeforeNextTransmit = 0f;
     private int dataAmount = 0;
     private int dataTransmitted = 0;
 
-    public float temperatureRate = 10f;
+    // For data memory
+    List<MagnetometerData> dataset = new List<MagnetometerData>();
 
-    public int PointsPerDataTransmitted = 100;
+    /* Script Accessing */
+    private SatelliteStats satelliteStats;
+    private CaptureData captureData;
 
     private void Start()
     {
+        // Get Satellite Stats Component
+        satelliteStats = GetComponent<SatelliteStats>();
+        captureData = GetComponent<CaptureData>();
+
+        // Disable Cooldown Bar
         cooldownBar.SetActive(false);
         slider = cooldownBar.GetComponentInChildren<Slider>();
-        dataTransmitted = 0;
     }
 
+    // Start Transmission
     public void TransmitDataToGroundStation()
     {
-        transmittingData = true;
         dataAmount = CaptureData.GetIndex();
         Debug.Log("Data amount: " + dataAmount);
         timeBeforeNextTransmit = timePerData * dataAmount + timeBuffer;
@@ -43,23 +52,22 @@ public class TransmitData : MonoBehaviour {
     {
         Debug.Log("Start of communication");
         dataTransmitted = 0;
-
         float elapsedTime = 0f;
         cooldownBar.SetActive(true);
 
-        while (elapsedTime <= time && PlayerPrefsX.GetBool("commCollision"))
+        while (elapsedTime <= time && satelliteStats.commCollision)
         {
             slider.value = elapsedTime / time;
             elapsedTime += Time.deltaTime;
-            SatelliteStats.telecomTemperature += Time.deltaTime * temperatureRate;
+            satelliteStats.battery -= Time.deltaTime;
+            satelliteStats.telecomTemperature += Time.deltaTime * temperatureRate;
             yield return null;
         }
 
         Debug.Log("Elapsed Time: " + elapsedTime.ToString() + " - TimePerData: " + timePerData.ToString());
         dataTransmitted = Mathf.FloorToInt(elapsedTime / timePerData);
-        Debug.Log("Data Transmitted Successfully: " + Mathf.Round(dataTransmitted).ToString() + "/" + CaptureData.MAX_DATA_TO_SHARE.ToString());
+        Debug.Log("Data Transmitted Successfully: " + Mathf.Round(dataTransmitted).ToString() + "/" + captureData.MAX_DATA.ToString());
 
-        transmittingData = false;
         cooldownBar.SetActive(false);
 
         UpdateScoreAndMoney();
@@ -74,7 +82,7 @@ public class TransmitData : MonoBehaviour {
         }
 
         CaptureData.ResetIndex();
-        CaptureDataText.text = "Acquérir donnée (0/" + CaptureData.MAX_DATA_TO_SHARE.ToString() + ")";
+        CaptureDataText.text = "Acquérir donnée (0/" + captureData.MAX_DATA.ToString() + ")";
     }
 
     public void UpdateScoreAndMoney()

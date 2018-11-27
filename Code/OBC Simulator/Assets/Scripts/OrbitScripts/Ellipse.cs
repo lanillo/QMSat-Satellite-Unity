@@ -1,11 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [System.Serializable]
 public class Ellipse
 {
-
     // Position to return
     public float xAxis;
     public float yAxis;

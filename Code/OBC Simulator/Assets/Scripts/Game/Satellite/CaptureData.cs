@@ -6,26 +6,30 @@ using System;
 
 public class CaptureData : MonoBehaviour
 {
-    public static MagnetometerData[] data;
+    [Header("Capture Tweaks")]
+    public float timeBeforeNextCapture = 5f;
+    public float batteryDechargeRate = 0.5f;
+    public float temperatureRate = 1.5f;
+    public int MAX_DATA = 15;
+
+    [Header("Unity Objects")]
     public Transform magnetometer;
     public GameObject cooldownBar;
-    public Text CaptureDataText;
     public Gradient gr;
+    public Text CaptureDataText;
+    public static MagnetometerData[] data;
     private Slider slider;
+    private SatelliteStats satelliteStats;
 
-    public static bool capturingData = false;
-    public float timeBeforeNextCapture = 5f;
-
-    public float temperatureRate = 1.5f;
+    [Header("Capture Status")]
+    public bool capturingData = false;
 
     private static int index = 0;
-    private const int MAX_DATA = 15;
-    public static int MAX_DATA_TO_SHARE = 0;
 
     private void Start()
     {
         data = new MagnetometerData[MAX_DATA];
-        MAX_DATA_TO_SHARE = MAX_DATA;
+        satelliteStats = GetComponent<SatelliteStats>();
         index = 0;
         capturingData = false;
         cooldownBar.SetActive(false);
@@ -83,7 +87,8 @@ public class CaptureData : MonoBehaviour
         {
             slider.value = elapsedTime / time;
             elapsedTime += Time.deltaTime;
-            SatelliteStats.payloadTemperature += Time.deltaTime * temperatureRate;
+            satelliteStats.battery -= Time.deltaTime * batteryDechargeRate;
+            satelliteStats.payloadTemperature += Time.deltaTime * temperatureRate;
             yield return null;
         }
 

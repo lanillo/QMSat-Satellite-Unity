@@ -4,35 +4,45 @@ using UnityEngine;
 
 public class AntennaDeployer : MonoBehaviour {
 
-    public ParticleSystem explosion;
+    [Header("Antenna Tweaks")]
+    public float temperatureRate = 1f;
+    public float temperatureTotalCost = 10f;
+    public float riskAntennaDeployement = 0.1f;
 
+    [Header("Unity GameObjects")]
     public GameObject antenna;
     public GameObject antenna1;
     public GameObject antenna2;
     public GameObject antenna3;
     private Transform antennaGroup;
 
-    public static bool deployAntenna = false;
-    public static bool antennaBroke = false;
+    [Header("Antenna Status")]
+    public bool deployAntenna = false;
+    public bool antennaBroke = false;
     public bool scaleAntenna = false;
-    public float riskAntennaDeployement = 0.1f;
-
-    public float temperatureRate = 1f;
-    public float temperatureTotalCost = 10f;
-    private float cumulativeTemperatureDeployment = 0f;
     private bool deployed = false;
-
     private bool failure = false;
     private bool endEffect = false;
+    private float cumulativeTemperatureDeployment = 0f;
     private float timer = 0f;
+
+    [Header("Unity Particle Effect")]
+    public ParticleSystem explosion;
+
+    /* For Script accessing */
+    private SatelliteStats satelliteStats;
 
     private void Start()
     {
         deployAntenna = false;
-        endEffect = false;
         antennaBroke = false;
-        timer = 0f;
+        scaleAntenna = false;
+
+        // Get antennaGroup Parent
         antennaGroup = antenna.gameObject.GetComponentInParent<Transform>();
+
+        // Get SatelliteStats Script
+        satelliteStats = GetComponent<SatelliteStats>();
 
         if (riskAntennaDeployement >= Random.Range(0f, 1f))
             failure = true;
@@ -57,6 +67,7 @@ public class AntennaDeployer : MonoBehaviour {
         if (deployAntenna)
         {
             Vector3 to = new Vector3(0, 90f, 60f);
+
             antenna.transform.eulerAngles = Vector3.Lerp(antenna.transform.rotation.eulerAngles, to, Time.deltaTime);
             antenna1.transform.eulerAngles = Vector3.Lerp(antenna1.transform.rotation.eulerAngles, to, Time.deltaTime);
             antenna2.transform.eulerAngles = Vector3.Lerp(antenna2.transform.rotation.eulerAngles, to, Time.deltaTime);
@@ -72,12 +83,10 @@ public class AntennaDeployer : MonoBehaviour {
         if (deployAntenna && !deployed)
         {
             cumulativeTemperatureDeployment += temperatureRate * Time.deltaTime;
-            SatelliteStats.telecomTemperature += temperatureRate * Time.deltaTime;
+            satelliteStats.telecomTemperature += temperatureRate * Time.deltaTime;
 
             if (cumulativeTemperatureDeployment >= temperatureTotalCost)
-            {
                 deployed = true;
-            }
         }
     }
 

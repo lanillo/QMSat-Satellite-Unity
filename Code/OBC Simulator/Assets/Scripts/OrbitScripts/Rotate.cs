@@ -17,20 +17,14 @@ public class Rotate : MonoBehaviour {
     void Update()
     {
         if (direction < 1f)
-        {
             direction += Time.deltaTime / (directionChangeSpeed / 2);
-        }
 
         if (spin)
         {
             if (clockwise)
-            {
                 transform.Rotate(Vector3.up, (speed * direction) * Time.deltaTime);
-            }
             else
-            {
                 transform.Rotate(-Vector3.up, (speed * direction) * Time.deltaTime);
-            }
         }
     }
 }

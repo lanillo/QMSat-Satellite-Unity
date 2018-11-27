@@ -3,31 +3,36 @@ using System.Collections;
 
 public class CameraView : MonoBehaviour
 {
-    public float speedNormal = 10.0f;
-    public float speedFast = 50.0f;
-
+    [Header("Mouse Sensibility")]
     public float mouseSensitivityX = 5.0f;
     public float mouseSensitivityY = 5.0f;
+    public float smoothSpeed = 0.125f;
 
-    float rotY = 0.0f;
-
+    [Header("Unity Objects")]
     public Transform cubesat;
     public Transform earth;
 
-    public float smoothSpeed = 0.125f;
-    public Vector3 offset;
-
-    public bool autoLook = true;
-
+    private float rotY = 0.0f;
+    private bool autoLook = true;
 
     void Start()
     {
         if (GetComponent<Rigidbody>())
             GetComponent<Rigidbody>().freezeRotation = true;
+
+        autoLook = true;
     }
 
     void Update()
     {
+        if (Input.GetKeyDown("v"))
+        {
+            if (autoLook)
+                autoLook = false;
+            else
+                autoLook = true;
+        }
+
         // rotation        
         if (Input.GetMouseButton(1))
         {
@@ -44,9 +49,8 @@ public class CameraView : MonoBehaviour
 
     private void LateUpdate()
     {
-        // Orbit set by CameraOrbit
-
-        Vector3 desiredPosition = cubesat.position + offset;
+        // Orbit set by QMSat.CameraOrbit
+        Vector3 desiredPosition = cubesat.position;
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
         transform.position = smoothedPosition;
 

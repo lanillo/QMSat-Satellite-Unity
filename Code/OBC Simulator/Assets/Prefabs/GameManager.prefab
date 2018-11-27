@@ -1,0 +1,254 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1978044832085766}
+  m_IsPrefabAsset: 1
+--- !u!1 &1978044832085766
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4106897119844622}
+  - component: {fileID: 114777981323024002}
+  - component: {fileID: 114163568213530210}
+  - component: {fileID: 114446497849410862}
+  - component: {fileID: 114404065172117954}
+  - component: {fileID: 114870230605611748}
+  - component: {fileID: 114729690310868470}
+  - component: {fileID: 114162539290061936}
+  - component: {fileID: 114266826671555194}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4106897119844622
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1978044832085766}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 577.78656, y: 33.775867, z: 910.59094}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114162539290061936
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1978044832085766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c355696f22b5907428efc0166416ffa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedTime: 4
+--- !u!114 &114163568213530210
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1978044832085766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed78b59daec0a4d4ebfa709c30b6630e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameUI: {fileID: 0}
+  gameOverUI: {fileID: 0}
+  reasonText: {fileID: 0}
+--- !u!114 &114266826671555194
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1978044832085766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14268c8d970a5264aa476ec78ac8afe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  payload: {fileID: 0}
+  explosion: {fileID: 198535555741446448, guid: 0b0ab284ed5622640ada692bdddb0cd5,
+    type: 2}
+  riskPayloadDeployement: 0.1
+  temperatureRate: 1
+  temperatureTotalCost: 10
+--- !u!114 &114404065172117954
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1978044832085766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d86e383c25774f2429458509ee0eeee5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosion: {fileID: 198535555741446448, guid: 0b0ab284ed5622640ada692bdddb0cd5,
+    type: 2}
+  antenna: {fileID: 0}
+  antenna1: {fileID: 0}
+  antenna2: {fileID: 0}
+  antenna3: {fileID: 0}
+  scaleAntenna: 0
+  riskAntennaDeployement: 0.1
+  temperatureRate: 1
+  temperatureTotalCost: 10
+--- !u!114 &114446497849410862
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1978044832085766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41e46cc0524a4614ca4cac7136cd67ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneFader: {fileID: 0}
+  menuSceneName: MainScene
+--- !u!114 &114729690310868470
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1978044832085766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce037e4cda4830144a9cc10ae3eb2cb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldownBar: {fileID: 0}
+  CaptureDataText: {fileID: 0}
+  timePerData: 0.5
+  timeBuffer: 0
+  temperatureRate: 10
+  PointsPerDataTransmitted: 100
+--- !u!114 &114777981323024002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1978044832085766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ce7ad7d7eedea4e9f80eb5f363b0bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  commCollision: 0
+  lightCollision: 0
+  canTransmit: 0
+  canCapture: 0
+  enableHeater: 0
+  batteryDechargeRate: 0.5
+  batteryRechargeRate: 0.1
+  antennaDeployementRate: 3
+  antennaDeployementTotalCost: 10
+  batteryCaptureDataDechargeRate: 0.5
+  payloadDeployementRate: 5
+  payloadDeployementTotalCost: 10
+  temperatureIncreaseRate: 0.1
+  temperatureDecreaseRate: 2.5
+  batteryHeaterTemperatureRate: 1
+  batteryHeaterBatteryRate: 1.5
+  batteryText: {fileID: 0}
+  scoreText: {fileID: 0}
+  moneyText: {fileID: 0}
+  alimText: {fileID: 0}
+  telecomText: {fileID: 0}
+  payloadText: {fileID: 0}
+  gr:
+    serializedVersion: 2
+    key0: {r: 1, g: 0, b: 0, a: 1}
+    key1: {r: 1, g: 0.93128675, b: 0, a: 1}
+    key2: {r: 1, g: 0.8595643, b: 0, a: 0}
+    key3: {r: 0.39483404, g: 1, b: 0, a: 0}
+    key4: {r: 1, g: 1, b: 1, a: 0}
+    key5: {r: 1, g: 1, b: 1, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 9830
+    ctime1: 20817
+    ctime2: 41634
+    ctime3: 65535
+    ctime4: 53392
+    ctime5: 63222
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 4
+    m_NumAlphaKeys: 2
+  comm: {fileID: 0}
+  captureData: {fileID: 0}
+  batterySlider: {fileID: 0}
+  batteryImage: {fileID: 0}
+--- !u!114 &114870230605611748
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1978044832085766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e92d09198569bae41bf6f914adf55f63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  magnetometer: {fileID: 0}
+  cooldownBar: {fileID: 0}
+  CaptureDataText: {fileID: 0}
+  gr:
+    serializedVersion: 2
+    key0: {r: 1, g: 0, b: 0, a: 1}
+    key1: {r: 1, g: 0.93128675, b: 0, a: 1}
+    key2: {r: 1, g: 0.8595643, b: 0, a: 0}
+    key3: {r: 0.39483404, g: 1, b: 0, a: 0}
+    key4: {r: 1, g: 1, b: 1, a: 0}
+    key5: {r: 1, g: 1, b: 1, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 9830
+    ctime1: 20817
+    ctime2: 41634
+    ctime3: 65535
+    ctime4: 53392
+    ctime5: 63222
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 4
+    m_NumAlphaKeys: 2
+  timeBeforeNextCapture: 1.5
+  temperatureRate: 1.5
