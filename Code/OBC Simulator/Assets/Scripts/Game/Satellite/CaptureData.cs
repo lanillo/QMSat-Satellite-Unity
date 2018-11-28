@@ -34,7 +34,7 @@ public class CaptureData : MonoBehaviour
         capturingData = false;
         cooldownBar.SetActive(false);
         slider = cooldownBar.GetComponentInChildren<Slider>();
-        CaptureDataText.text = "Acquérir donnée (" + GetIndex().ToString() + "/" + MAX_DATA.ToString() + ")";
+        CaptureDataText.text = "Acquisition de donnees (" + GetIndex().ToString() + "/" + MAX_DATA.ToString() + ")";
         //CaptureDataText.color = gr.Evaluate(((float)index + 1) / 15f);
     }
 
@@ -43,7 +43,7 @@ public class CaptureData : MonoBehaviour
         if (index >= MAX_DATA)
         {
             index = 0;
-            Debug.Log("Warning, data overwritten");
+            CaptureDataText.text = "Attention, donnees ecrasees";
         }
         else
         {
@@ -51,7 +51,7 @@ public class CaptureData : MonoBehaviour
             {
                 GetDataAtPosition(index);
                 //CaptureDataText.color = gr.Evaluate(((float) index + 1) / 15f);
-                CaptureDataText.text = "Acquérir donnée (" + GetNumberOfElements().ToString() + "/" + MAX_DATA.ToString() + ")";
+                CaptureDataText.text = "Acquisition de donnees (" + GetNumberOfElements().ToString() + "/" + MAX_DATA.ToString() + ")";
                 index++;
                 capturingData = true;
                 StartCoroutine(DelayBeforeCapture(timeBeforeNextCapture));

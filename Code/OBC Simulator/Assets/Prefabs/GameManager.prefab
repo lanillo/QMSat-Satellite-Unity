@@ -27,6 +27,7 @@ GameObject:
   - component: {fileID: 114729690310868470}
   - component: {fileID: 114162539290061936}
   - component: {fileID: 114266826671555194}
+  - component: {fileID: 114138153288537020}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -47,6 +48,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114138153288537020
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1978044832085766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 682c437e9fe907d4195f20dcc1054690, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerRowPrefab: {fileID: 1366922271496786, guid: 3be5134f95f65214a89c643529c2edbb,
+    type: 2}
+  scoreboardPanel: {fileID: 0}
 --- !u!114 &114162539290061936
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -58,7 +73,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c355696f22b5907428efc0166416ffa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedTime: 4
+  speedTime: 2
 --- !u!114 &114163568213530210
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -73,6 +88,8 @@ MonoBehaviour:
   gameUI: {fileID: 0}
   gameOverUI: {fileID: 0}
   reasonText: {fileID: 0}
+  newName: {fileID: 0}
+  button: {fileID: 0}
 --- !u!114 &114266826671555194
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -84,12 +101,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14268c8d970a5264aa476ec78ac8afe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  payload: {fileID: 0}
-  explosion: {fileID: 198535555741446448, guid: 0b0ab284ed5622640ada692bdddb0cd5,
-    type: 2}
   riskPayloadDeployement: 0.1
   temperatureRate: 1
   temperatureTotalCost: 10
+  payload: {fileID: 0}
+  explosion: {fileID: 198535555741446448, guid: 0b0ab284ed5622640ada692bdddb0cd5,
+    type: 2}
+  deployPayload: 0
+  payloadBroke: 0
 --- !u!114 &114404065172117954
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -101,16 +120,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d86e383c25774f2429458509ee0eeee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosion: {fileID: 198535555741446448, guid: 0b0ab284ed5622640ada692bdddb0cd5,
-    type: 2}
+  temperatureRate: 1
+  temperatureTotalCost: 10
+  riskAntennaDeployement: 0.1
   antenna: {fileID: 0}
   antenna1: {fileID: 0}
   antenna2: {fileID: 0}
   antenna3: {fileID: 0}
+  deployAntenna: 0
+  antennaBroke: 0
   scaleAntenna: 0
-  riskAntennaDeployement: 0.1
-  temperatureRate: 1
-  temperatureTotalCost: 10
+  explosion: {fileID: 198535555741446448, guid: 0b0ab284ed5622640ada692bdddb0cd5,
+    type: 2}
 --- !u!114 &114446497849410862
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -135,12 +156,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce037e4cda4830144a9cc10ae3eb2cb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldownBar: {fileID: 0}
-  CaptureDataText: {fileID: 0}
   timePerData: 0.5
   timeBuffer: 0
   temperatureRate: 10
+  batteryDechargeRate: 1.5
   PointsPerDataTransmitted: 100
+  cooldownBar: {fileID: 0}
+  CaptureDataText: {fileID: 0}
 --- !u!114 &114777981323024002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -157,17 +179,28 @@ MonoBehaviour:
   canTransmit: 0
   canCapture: 0
   enableHeater: 0
+  battery: 100
   batteryDechargeRate: 0.5
-  batteryRechargeRate: 0.1
+  batteryRechargeRate: 0.75
+  batteryHeaterBatteryRate: 2
   antennaDeployementRate: 3
   antennaDeployementTotalCost: 10
-  batteryCaptureDataDechargeRate: 0.5
   payloadDeployementRate: 5
   payloadDeployementTotalCost: 10
-  temperatureIncreaseRate: 0.1
-  temperatureDecreaseRate: 2.5
-  batteryHeaterTemperatureRate: 1
-  batteryHeaterBatteryRate: 1.5
+  captureDataDechargeRate: 1.5
+  temperatureBatteryIncreaseRate: 0.25
+  temperatureTelecomIncreaseRate: 0.25
+  temperaturePayloadIncreaseRate: 0.5
+  temperatureBatteryDecreaseRate: 2
+  temperatureTelecomDecreaseRate: 1.5
+  temperaturePayloadDecreaseRate: 2.5
+  batteryHeaterTemperatureRate: 3
+  batteryFailure: 0
+  telecomFailure: 0
+  payloadFailure: 0
+  batteryTemperature: 60
+  telecomTemperature: 60
+  payloadTemperature: 60
   batteryText: {fileID: 0}
   scoreText: {fileID: 0}
   moneyText: {fileID: 0}
@@ -218,9 +251,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e92d09198569bae41bf6f914adf55f63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeBeforeNextCapture: 1.5
+  batteryDechargeRate: 0.5
+  temperatureRate: 1.5
+  MAX_DATA: 15
   magnetometer: {fileID: 0}
   cooldownBar: {fileID: 0}
-  CaptureDataText: {fileID: 0}
   gr:
     serializedVersion: 2
     key0: {r: 1, g: 0, b: 0, a: 1}
@@ -250,5 +286,5 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
-  timeBeforeNextCapture: 1.5
-  temperatureRate: 1.5
+  CaptureDataText: {fileID: 0}
+  capturingData: 0

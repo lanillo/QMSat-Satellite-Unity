@@ -10,6 +10,7 @@ public class TransmitData : MonoBehaviour {
     public float timePerData = 0.5f;
     public float timeBuffer = 0f;
     public float temperatureRate = 10f;
+    public float batteryDechargeRate = 1.5f;
     public int PointsPerDataTransmitted = 100;
 
     [Header("Unity GameObjects")]
@@ -59,7 +60,7 @@ public class TransmitData : MonoBehaviour {
         {
             slider.value = elapsedTime / time;
             elapsedTime += Time.deltaTime;
-            satelliteStats.battery -= Time.deltaTime;
+            satelliteStats.battery -= batteryDechargeRate * Time.deltaTime;
             satelliteStats.telecomTemperature += Time.deltaTime * temperatureRate;
             yield return null;
         }
@@ -82,7 +83,7 @@ public class TransmitData : MonoBehaviour {
         }
 
         CaptureData.ResetIndex();
-        CaptureDataText.text = "Acquérir donnée (0/" + captureData.MAX_DATA.ToString() + ")";
+        CaptureDataText.text = "Acquisition de donnees (0/" + captureData.MAX_DATA.ToString() + ")";
     }
 
     public void UpdateScoreAndMoney()

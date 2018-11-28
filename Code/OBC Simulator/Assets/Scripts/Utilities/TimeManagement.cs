@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class TimeManagement : MonoBehaviour {
+
+    public Text speedText; 
 
     public float speedTime = 2f;
 
@@ -9,6 +12,7 @@ public class TimeManagement : MonoBehaviour {
     private void Start()
     {
         Time.timeScale = 1f;
+        speedText.text = "";
     }
 
     public void FastForwardSpeed()
@@ -17,10 +21,12 @@ public class TimeManagement : MonoBehaviour {
         {
             Time.timeScale = speedTime;
             status++;
+            speedText.text = "X" + speedTime.ToString();
         }
         else
         {
             Time.timeScale = speedTime * 2;
+            speedText.text = "X" + (2 *speedTime).ToString();
             status = 0;
         }
     }
@@ -28,10 +34,12 @@ public class TimeManagement : MonoBehaviour {
     public void PauseSpeed()
     {
         Time.timeScale = 0f;
+        speedText.text = "";
     }
 
     public void NormalSpeed()
     {
         Time.timeScale = 1f;
+        speedText.text = "";
     }
 }

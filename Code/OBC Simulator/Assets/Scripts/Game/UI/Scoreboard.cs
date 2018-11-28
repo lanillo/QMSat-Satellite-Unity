@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,14 +8,7 @@ public class Scoreboard : MonoBehaviour {
     public GameObject playerRowPrefab;
     public GameObject scoreboardPanel;
 
-    [SerializeField]
-    List<PersonScore> scoreboard = new List<PersonScore>
-    {
-        new PersonScore("Luis", 1500f),
-        new PersonScore("Fred", 0f),
-        new PersonScore("Samuel", 300f),
-        new PersonScore("Burge", 100f)
-    };
+    PersonScoreCollection scoreboard = new PersonScoreCollection();
 
     public void UpdateText()
     {
@@ -25,9 +17,9 @@ public class Scoreboard : MonoBehaviour {
             GameObject.Destroy(t.gameObject);
         }
 
-        scoreboard.Sort();
+        ReadValuesFromJSON();
 
-        foreach (PersonScore person in scoreboard)
+        foreach (PersonScore person in scoreboard.persons)
         {
             GameObject go = (GameObject)Instantiate(playerRowPrefab);
             go.transform.SetParent(scoreboardPanel.transform);
@@ -35,28 +27,36 @@ public class Scoreboard : MonoBehaviour {
             go.transform.GetChild(0).transform.GetChild(0).GetComponent<Text>().text = person.personName;
             go.transform.GetChild(0).transform.GetChild(1).GetComponent<Text>().text = person.score.ToString();
         }
-
-        SaveValuesOnJSON();
     }
 
     public void AddNewScore(string newName, float newScore)
     {
-        scoreboard.Add(new PersonScore(newName, newScore));
-        scoreboard.Sort();
+        scoreboard.persons.Add(new PersonScore(newName, newScore));
+        scoreboard.persons.Sort();
+        WriteValuesToJSON();
         UpdateText();
     }
 
-    public void SaveValuesOnJSON()
+    public void WriteValuesToJSON()
     {
-        string json = "";
+        string path = Application.dataPath + "/Ressources/scoreboard.json";
+        string str = JsonUtility.ToJson(scoreboard);
+        File.WriteAllText(path, str);
+    }
 
-        foreach (PersonScore ps in scoreboard)
+    public void ReadValuesFromJSON()
+    {
+        string path = Application.dataPath + "/Ressources/scoreboard.json";
+
+        if (!File.Exists(path))
         {
-            Debug.Log(JsonUtility.ToJson(ps));
-            json += JsonUtility.ToJson(ps);
+            Directory.CreateDirectory(Application.dataPath + "/Ressources");
+            File.Create(Application.dataPath + "/Ressources/scoreboard.json");
+            File.WriteAllText(Application.dataPath + "/Ressources/scoreboard.json", JsonUtility.ToJson(scoreboard));
         }
 
-        //string json = JsonUtility.ToJson(scoreboard, true);
-        Debug.Log(json);
+        string json = File.ReadAllText(path);
+        if (json != null)
+            JsonUtility.FromJsonOverwrite(json, scoreboard);
     }
 }

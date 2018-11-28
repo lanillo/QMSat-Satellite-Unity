@@ -16,6 +16,7 @@ public class SatelliteStats : MonoBehaviour {
     public float battery = 100f;
     public float batteryDechargeRate = 0.1f;
     public float batteryRechargeRate = 0.1f;
+    public float batteryHeaterBatteryRate = 1.5f;
     [Space(5)]
     public float antennaDeployementRate = 1f;
     public float antennaDeployementTotalCost = 10f;
@@ -30,14 +31,17 @@ public class SatelliteStats : MonoBehaviour {
     public float captureDataDechargeRate = 0.5f;
 
     [Header("Temperatures")]
-    public float temperatureIncreaseRate = 0.1f;
-    public float temperatureDecreaseRate = 2.5f;
+    public float temperatureBatteryIncreaseRate = 0.1f;
+    public float temperatureTelecomIncreaseRate = 0.1f;
+    public float temperaturePayloadIncreaseRate = 0.1f;
+    public float temperatureBatteryDecreaseRate = 2.5f;
+    public float temperatureTelecomDecreaseRate = 2.5f;
+    public float temperaturePayloadDecreaseRate = 2.5f;
     public float batteryHeaterTemperatureRate = 1f;
-    public float batteryHeaterBatteryRate = 1.5f;
-    public bool alimFailure = false;
+    public bool batteryFailure = false;
     public bool telecomFailure = false;
     public bool payloadFailure = false;
-    public float alimTemperature = 60f;
+    public float batteryTemperature = 60f;
     public float telecomTemperature = 60f;
     public float payloadTemperature = 60f;
 
@@ -69,7 +73,7 @@ public class SatelliteStats : MonoBehaviour {
     private void Start()
     {
         // Start Values
-        battery = 100f;
+        battery = 20f;
         playerMoney = 0f;
         playerScore = 0f;
 
@@ -82,12 +86,12 @@ public class SatelliteStats : MonoBehaviour {
         captureDataButton = captureData.GetComponent<Button>();
 
         // Set Start Temperatures
-        alimTemperature = Random.Range(30f, 60f);
+        batteryTemperature = Random.Range(30f, 60f);
         payloadTemperature = Random.Range(10f, 50f);
         telecomTemperature = Random.Range(10, 50f);
 
         // Reset Bools
-        alimFailure = false;
+        batteryFailure = false;
         telecomFailure = false;
         payloadFailure = false;
         enableHeater = false;
@@ -99,8 +103,6 @@ public class SatelliteStats : MonoBehaviour {
     {
         if (GameManager.gameOver)
             return;
-
-
 
         UpdateTemperature();
         UpdateBattery();
@@ -212,21 +214,21 @@ public class SatelliteStats : MonoBehaviour {
         // Temperature updates from Light Collision
         if (lightCollision)
         {
-            alimTemperature += temperatureIncreaseRate * Time.deltaTime;
-            payloadTemperature += temperatureIncreaseRate * Time.deltaTime;
-            telecomTemperature += temperatureIncreaseRate * Time.deltaTime;
+            batteryTemperature += temperatureBatteryIncreaseRate * Time.deltaTime;
+            payloadTemperature += temperaturePayloadIncreaseRate * Time.deltaTime;
+            telecomTemperature += temperatureTelecomIncreaseRate * Time.deltaTime;
         }
         else
         {
-            alimTemperature -= temperatureDecreaseRate * Time.deltaTime;
-            payloadTemperature -= temperatureDecreaseRate * Time.deltaTime;
-            telecomTemperature -= temperatureDecreaseRate * Time.deltaTime;
+            batteryTemperature -= temperatureBatteryDecreaseRate * Time.deltaTime;
+            payloadTemperature -= temperaturePayloadDecreaseRate * Time.deltaTime;
+            telecomTemperature -= temperatureTelecomDecreaseRate * Time.deltaTime;
         }
 
         // Enable Battery Heater
         if (enableHeater)
         {
-            alimTemperature += batteryHeaterTemperatureRate * Time.deltaTime;
+            batteryTemperature += batteryHeaterTemperatureRate * Time.deltaTime;
             battery -= batteryHeaterBatteryRate * Time.deltaTime;
         }
 
@@ -235,9 +237,9 @@ public class SatelliteStats : MonoBehaviour {
 
     void CheckTemperatureLimits()
     {
-        if (alimTemperature > 125f || alimTemperature < -40f)
+        if (batteryTemperature > 125f || batteryTemperature < -40f)
         {
-            alimFailure = true;
+            batteryFailure = true;
         }
 
         if (payloadTemperature > 125f || payloadTemperature < -40f)
@@ -254,7 +256,7 @@ public class SatelliteStats : MonoBehaviour {
     public void ReadAlimTemperature()
     {
         // -40 a 125;
-        alimText.text = alimTemperature.ToString("0") + " °C";
+        alimText.text = batteryTemperature.ToString("0") + " °C";
     }
 
     public void ReadPaylaodTemperature()

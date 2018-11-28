@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public class PersonScore : IComparable<PersonScore> {
 
     [SerializeField]

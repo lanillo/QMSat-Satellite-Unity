@@ -58,19 +58,19 @@ public class GameManager : MonoBehaviour {
         if (antennaDeployer.antennaBroke)
             EndGame(Reasons.AntennaBroke);
 
-        if (satelliteStats.alimFailure)
+        if (satelliteStats.payloadFailure)
             EndGame(Reasons.PayloadOverheated);
 
         if (satelliteStats.telecomFailure)
             EndGame(Reasons.AntennaOverheated);
 
-        if (satelliteStats.alimFailure)
+        if (satelliteStats.batteryFailure)
             EndGame(Reasons.BatteryOverheated);
     }
 
     void EndGame(Reasons reasons)
     {
-        Time.timeScale = 1f;
+        //Time.timeScale = 1f;
 
         scoreboard.UpdateText();
 
@@ -84,22 +84,22 @@ public class GameManager : MonoBehaviour {
                 reasonText.text = "Plus d'énergie, le satellite est mort !".Replace('é', 'e');
                 break;
             case Reasons.PayloadBroke:
-                reasonText.text = "La charge utile s'est détachée du satellite !".Replace('é', 'e');
+                reasonText.text = "Le magnetometre s'est détachée du satellite !".Replace('é', 'e');
                 break;
             case Reasons.AntennaBroke:
                 reasonText.text = "Les antennes ne se sont pas deployées !".Replace('é', 'e');
                 break;
             case Reasons.PayloadOverheated:
-                reasonText.text = "Les composantes électriques de la charge utile ont brisé dû à la température !".Replace('é', 'e');
+                reasonText.text = "La température a brisé le magnetometre !".Replace('é', 'e');
                 break;
             case Reasons.AntennaOverheated:
-                reasonText.text = "Les composantes électriques du circuit de transmission ont brisé dû à la température !".Replace('é', 'e');
+                reasonText.text = "La température a brisé les antennes !".Replace('é', 'e');
                 break;
             case Reasons.Radiation:
-                reasonText.text = "La radiation a brisé les composantes électriques !".Replace('é', 'e');
+                reasonText.text = "La radiation a pertubé le magnetometre !".Replace('é', 'e');
                 break;
             case Reasons.BatteryOverheated:
-                reasonText.text = "Les batteries ont surchauffé et brisé !".Replace('é', 'e');
+                reasonText.text = "La temperature a brisé les batteries !".Replace('é', 'e');
                 break;
             default:
                 reasonText.text = "Ce n'est définitivement pas ton jour !".Replace('é', 'e');
