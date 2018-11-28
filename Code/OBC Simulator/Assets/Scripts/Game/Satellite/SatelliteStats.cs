@@ -211,6 +211,8 @@ public class SatelliteStats : MonoBehaviour {
 
     private void UpdateTemperature()
     {
+        CheckTemperatureLimits();
+
         // Temperature updates from Light Collision
         if (lightCollision)
         {
@@ -238,19 +240,22 @@ public class SatelliteStats : MonoBehaviour {
     void CheckTemperatureLimits()
     {
         if (batteryTemperature > 125f || batteryTemperature < -40f)
-        {
             batteryFailure = true;
-        }
+
+        if (batteryTemperature < -40f || batteryTemperature > 125f )
+            batteryFailure = true;
 
         if (payloadTemperature > 125f || payloadTemperature < -40f)
-        {
             payloadFailure = true;
-        }
+
+        if (payloadTemperature < -40f || payloadTemperature > 125f)
+            payloadFailure = true;
 
         if (telecomTemperature > 125f || telecomTemperature < -40f)
-        {
             telecomFailure = true;
-        }
+
+        if (telecomTemperature < -40f || telecomTemperature > 125f)
+            telecomFailure = true;
     }
 
     public void ReadAlimTemperature()

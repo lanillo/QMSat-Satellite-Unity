@@ -1,1 +1,24 @@
-{"persons":[{"personName":"Luis","score":1500.0},{"personName":"Samuel","score":300.0},{"personName":"Burge","score":100.0},{"personName":"asdadsasd","score":0.0},{"personName":"qweqweqwe","score":0.0},{"personName":"qwewe","score":0.0},{"personName":"Fred","score":0.0},{"personName":"qweqwe","score":0.0},{"personName":"qqq","score":0.0}]}
+{
+  "persons": [
+    {
+      "personName": "Luis",
+      "score": 1500.0
+    },
+    {
+      "personName": "Samuel",
+      "score": 300.0
+    },
+    {
+      "personName": "Vincent",
+      "score": 100.0
+    },
+    {
+      "personName": "Fred",
+      "score": 0.0
+    },
+    {
+      "personName": "Maxime",
+      "score": 0.0
+    }
+  ]
+}
