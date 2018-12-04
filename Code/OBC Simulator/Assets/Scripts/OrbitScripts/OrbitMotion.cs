@@ -65,7 +65,12 @@ public class OrbitMotion : MonoBehaviour
 
     public string FindMonth()
     {
-        if (orbitProgress > 11f / 12f)
+        if (orbitProgress > 11.9f / 12f)
+        {
+            GameManager.timeOver = true;
+            return "Fin";
+        }            
+        else if (orbitProgress > 11f / 12f)
             return "Decembre";
         else if (orbitProgress > 10f / 12f)
             return "Novembre";

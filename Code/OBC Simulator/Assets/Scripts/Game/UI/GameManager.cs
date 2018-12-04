@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour {
     private Scoreboard scoreboard;
 
     public static bool gameOver = false;
+    public static bool timeOver = false;
 
     public enum Reasons
     {
@@ -28,7 +29,8 @@ public class GameManager : MonoBehaviour {
         PayloadOverheated,
         AntennaOverheated,
         BatteryOverheated,
-        Radiation
+        Radiation,
+        MissionOver
     }
 
     private void Start()
@@ -39,6 +41,7 @@ public class GameManager : MonoBehaviour {
         scoreboard = GetComponent<Scoreboard>();
 
         gameOver = false;
+        timeOver = false;
         gameOverUI.SetActive(false);
         gameUI.SetActive(true);
         button.interactable = true;
@@ -66,6 +69,9 @@ public class GameManager : MonoBehaviour {
 
         if (satelliteStats.batteryFailure)
             EndGame(Reasons.BatteryOverheated);
+
+        if (timeOver)
+            EndGame(Reasons.MissionOver);
     }
 
     void EndGame(Reasons reasons)
@@ -100,6 +106,9 @@ public class GameManager : MonoBehaviour {
                 break;
             case Reasons.BatteryOverheated:
                 reasonText.text = "La temperature a brisé les batteries !".Replace('é', 'e');
+                break;
+            case Reasons.MissionOver:
+                reasonText.text = "La mission est finie. Bravo !".Replace('é', 'e');
                 break;
             default:
                 reasonText.text = "Ce n'est définitivement pas ton jour !".Replace('é', 'e');
