@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+
+/* For playerPrefs, with booloean values */
 public class PlayerPrefsX
 {
     public static void SetBool(string name, bool booleanValue)

@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+/* Create PersonScoreCollection */
 [Serializable]
 class PersonScoreCollection {
 

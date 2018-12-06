@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+/* Renders orbit trajectory */
 [RequireComponent(typeof(LineRenderer))]
 public class OrbitRenderer : MonoBehaviour {
 

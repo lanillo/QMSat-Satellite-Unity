@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* Controls the camera for the user */
 public class CameraView : MonoBehaviour
 {
     [Header("Mouse Sensibility")]
@@ -25,6 +26,7 @@ public class CameraView : MonoBehaviour
 
     void Update()
     {
+        /* Free view */
         if (Input.GetKeyDown("v"))
         {
             if (autoLook)
@@ -33,7 +35,7 @@ public class CameraView : MonoBehaviour
                 autoLook = true;
         }
 
-        // rotation        
+        /* Free view with mouse */        
         if (Input.GetMouseButton(1))
         {
             if (autoLook)
@@ -44,18 +46,17 @@ public class CameraView : MonoBehaviour
             rotY = Mathf.Clamp(rotY, -89.5f, 89.5f);
             transform.localEulerAngles = new Vector3(-rotY, rotX, 0.0f);
         }
-
     }
 
     private void LateUpdate()
     {
-        // Orbit set by QMSat.CameraOrbit
+        /* Update position of the camera in orbit behind to see the satellite */
         Vector3 desiredPosition = cubesat.position;
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
         transform.position = smoothedPosition;
 
+        /* Change the camera rotation */
         if (autoLook)
             transform.LookAt(earth);
-
     }
 }

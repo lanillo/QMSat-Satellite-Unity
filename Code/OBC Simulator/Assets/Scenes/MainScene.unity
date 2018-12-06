@@ -2326,26 +2326,16 @@ Prefab:
       propertyPath: CaptureDataText
       value: 
       objectReference: {fileID: 1025164984}
-    - target: {fileID: 114266826671555194, guid: 95f96b30efdfb034bb918130836d4f52,
-        type: 2}
-      propertyPath: payload
-      value: 
-      objectReference: {fileID: 1594801957}
     - target: {fileID: 114162539290061936, guid: 95f96b30efdfb034bb918130836d4f52,
         type: 2}
       propertyPath: speedText
       value: 
       objectReference: {fileID: 1132942566}
-    - target: {fileID: 114777981323024002, guid: 95f96b30efdfb034bb918130836d4f52,
+    - target: {fileID: 114266826671555194, guid: 95f96b30efdfb034bb918130836d4f52,
         type: 2}
-      propertyPath: temperatureTelecomDecreaseRate
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114777981323024002, guid: 95f96b30efdfb034bb918130836d4f52,
-        type: 2}
-      propertyPath: temperatureTelecomIncreaseRate
-      value: 0.2
-      objectReference: {fileID: 0}
+      propertyPath: payload
+      value: 
+      objectReference: {fileID: 1594801957}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 95f96b30efdfb034bb918130836d4f52, type: 2}
   m_IsPrefabAsset: 0
@@ -3838,8 +3828,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 135, y: 70}
-  m_SizeDelta: {x: 250, y: 120}
+  m_AnchoredPosition: {x: 192.4, y: 79.4}
+  m_SizeDelta: {x: 364.8, y: 138.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1153363526
 MonoBehaviour:

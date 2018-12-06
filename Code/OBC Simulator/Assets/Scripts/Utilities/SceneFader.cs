@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-
+/* Scene fader for black effect when restarting game */
 public class SceneFader : MonoBehaviour
 {
     public Image img;

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+/* Detect collision with objects */
 public class CollisionDetector : MonoBehaviour {
 
     [HideInInspector]

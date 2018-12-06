@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
+/* Creates Person Score class for score */
 [Serializable]
 public class PersonScore : IComparable<PersonScore> {
 

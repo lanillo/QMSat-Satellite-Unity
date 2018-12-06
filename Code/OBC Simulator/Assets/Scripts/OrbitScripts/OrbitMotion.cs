@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+/* Moves object around defined orbit by Ellipse path */
 public class OrbitMotion : MonoBehaviour
 {
     public Transform orbitingObject;

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/* Contains everything related to the Satellite
+ * Contains every recharge/decharge rate and increase/decrease rate for battery and temperature, respectively
+ * Increases/decreases the temperature and increases/reduces battery according to sun position */
 public class SatelliteStats : MonoBehaviour {
 
     [Header("Abilities of Satellite")]

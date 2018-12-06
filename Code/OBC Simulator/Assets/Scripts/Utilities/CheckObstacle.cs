@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/* Check if there are any objects between two objects */
 public class CheckObstacle : MonoBehaviour {
 
     [Header("Unity GameManager")]

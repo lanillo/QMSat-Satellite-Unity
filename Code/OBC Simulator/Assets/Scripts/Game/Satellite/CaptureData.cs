@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
+/* Controls where and when can data be acquired 
+ * Contains the whole data acquired
+ * Increases the payload temperature and reduces battery */
 public class CaptureData : MonoBehaviour
 {
     [Header("Capture Tweaks")]

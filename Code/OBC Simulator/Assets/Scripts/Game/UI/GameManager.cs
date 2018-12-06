@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/* Display GameOverUI when loosing condition happen */
 public class GameManager : MonoBehaviour {
 
     [Header("Unity UI Objects")]

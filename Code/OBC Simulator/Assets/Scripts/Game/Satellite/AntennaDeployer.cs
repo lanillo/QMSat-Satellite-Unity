@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/* Deploys the antenna
+ * Contains the risk of deployement
+ * Increases the telecommunications temperature and reduces battery */
 public class AntennaDeployer : MonoBehaviour {
 
     [Header("Antenna Tweaks")]

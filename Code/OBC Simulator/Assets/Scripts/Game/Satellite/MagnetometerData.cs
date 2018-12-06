@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/* Class containing 1 data acquired by the magnetometer */
 [System.Serializable]
 public struct MagnetometerData
 {

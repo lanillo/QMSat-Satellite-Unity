@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/* Controls where and when can data be transmitted 
+ * Gives information on how many data was transmitted 
+ * Increases score and money 
+ * Increases the telecommunications temperature and reduces battery */
 public class TransmitData : MonoBehaviour {
 
     [Header("Transmit Tweaks")]

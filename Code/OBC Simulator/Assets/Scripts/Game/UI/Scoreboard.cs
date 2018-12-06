@@ -2,7 +2,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-
+/* Saves and list highscores in panel 
+ * Highscores are saved in Ressources/scoreboard.json */
 public class Scoreboard : MonoBehaviour {
 
     public GameObject playerRowPrefab;

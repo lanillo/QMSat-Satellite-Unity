@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/* Makes object rotate from its center */
 public class Rotate : MonoBehaviour {
 
     [Tooltip("Spin: Yes or No")]

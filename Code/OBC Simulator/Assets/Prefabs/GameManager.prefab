@@ -73,6 +73,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c355696f22b5907428efc0166416ffa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedText: {fileID: 0}
   speedTime: 2
 --- !u!114 &114163568213530210
 MonoBehaviour:
@@ -189,10 +190,10 @@ MonoBehaviour:
   payloadDeployementTotalCost: 10
   captureDataDechargeRate: 1.5
   temperatureBatteryIncreaseRate: 0.25
-  temperatureTelecomIncreaseRate: 0.25
+  temperatureTelecomIncreaseRate: 0.2
   temperaturePayloadIncreaseRate: 0.5
   temperatureBatteryDecreaseRate: 2
-  temperatureTelecomDecreaseRate: 1.5
+  temperatureTelecomDecreaseRate: 2
   temperaturePayloadDecreaseRate: 2.5
   batteryHeaterTemperatureRate: 3
   batteryFailure: 0

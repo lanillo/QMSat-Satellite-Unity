@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+/* GameOverUI options */
 public class GameOver : MonoBehaviour
 {
     public SceneFader sceneFader;

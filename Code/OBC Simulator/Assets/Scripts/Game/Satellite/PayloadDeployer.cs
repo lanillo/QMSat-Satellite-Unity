@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/* Deploys the payload
+ * Contains the risk of deployement
+ * Increases the payload temperature and reduces battery */
 public class PayloadDeployer : MonoBehaviour {
 
     [Header("Payload Tweaks")]

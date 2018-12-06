@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+/* Creates ellipse system */ 
 [System.Serializable]
 public class Ellipse
 {
